@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles can be added below this line */
+
+body {
+    @apply bg-white text-gray-800;
+}
+
+h1, h2, h3 {
+    @apply font-bold;
+}
+
+#menuBar {
+    @apply flex justify-between items-center p-4 bg-gray-100 shadow-md;
+}
+
+#options a {
+    @apply text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out mx-2;
+}
+
+#main {
+    @apply p-6;
+}
+
+#map {
+    @apply my-6 rounded-lg overflow-hidden shadow-lg;
+}
+
+iframe {
+    @apply w-full h-64;
+}
+
+a {
+    @apply text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out;
+}
