@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/main.css" type="text/css">
-        <link rel="stylesheet" href="css/home.css" type="text/css">
-        <link rel="icon" href="assets/images/icon.jpg">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AD Interior</title>
-    </head>
-    <body>
-        <div id="menuBar">
-            <a href="index.html">
-                <img src="assets/images/icon.jpg"/>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/tailwind.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Contact Us - AD Interior</title>
+    <link rel="icon" href="assets/images/icon.jpg">
+    <link href="css/nav.css" rel="stylesheet">
+    <script src="js/menu.js" defer></script>
+</head>
+<body>
+    <nav class="bg-[#454545] shadow-md rounded-b-lg p-4 relative w-full">
+        <div class="flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="assets/images/icon.jpg" alt="AD Interior Logo" class="h-[100px] w-auto -my-4">
             </a>
-            <div id="options">
-                <a href="index.html">Home</a>|<a href="projects.html">Projects</a>|<a href="service.html">Service</a>|<a href="contact.html">Contact Us</a>|<a href="career.html">Career</a>
+            
+            <div class="flex items-center">
+                <div id="menu" class="md:block">
+                    <div class="menu-dropdown md:flex md:space-x-4 bg-[#454545]">
+                        <a href="index.html" class="block md:inline-block py-2 px-4 text-[#bbae9d] hover:text-white transition">Home</a>
+                        <span class="hidden md:inline-block text-[#bbae9d] py-2">|</span>
+                        <a href="projects.html" class="block md:inline-block py-2 px-4 text-[#bbae9d] hover:text-white transition">Projects</a>
+                        <span class="hidden md:inline-block text-[#bbae9d] py-2">|</span>
+                        <a href="service.html" class="block md:inline-block py-2 px-4 text-[#bbae9d] hover:text-white transition">Service</a>
+                        <span class="hidden md:inline-block text-[#bbae9d] py-2">|</span>
+                        <a href="contact.html" class="block md:inline-block py-2 px-4 text-[#bbae9d] hover:text-white transition">Contact Us</a>
+                        <span class="hidden md:inline-block text-[#bbae9d] py-2">|</span>
+                        <a href="career.html" class="block md:inline-block py-2 px-4 text-[#bbae9d] hover:text-white transition">Career</a>
+                    </div>
+                </div>
+                
+                <button id="menu-button" class="md:hidden text-[#bbae9d] hover:text-white transition p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-        <div id="main">
-            <img src="assets/images/example.jpeg" width=100%/>
-            <div>Professional Interior Design</div>
-            <img src="assets/images/example.jpeg" width=100%/>
-            <div>We Design your dream house</div>
-        </div>
-    </body>
+    </nav>
+    <div id="main">
+        <img src="assets/images/example.jpeg" width=100%/>
+        <div>Professional Interior Design</div>
+        <img src="assets/images/example.jpeg" width=100%/>
+    </div>
+</body>
 </html>
