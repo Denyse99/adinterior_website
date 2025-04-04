@@ -6,13 +6,52 @@
     <link href="css/tailwind.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Contact Us - AD Interior</title>
+    <title>AD Interior</title>
     <link rel="icon" href="assets/images/icon.jpg">
     <link href="css/nav.css" rel="stylesheet">
     <script src="js/menu.js" defer></script>
+    <style>
+        .slideshow-container {
+            position: relative;
+            height: 70vh;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+        #slideshow {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        .slideshow-image {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 100%;
+            height: 100%;
+            transition: left 1.5s ease-in-out;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 1;
+        }
+        .slideshow-image.active {
+            left: 0;
+            z-index: 2;
+        }
+        .slideshow-image.prev {
+            left: -100%;
+            z-index: 1;
+        }
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 3;
+        }
+    </style>
 </head>
-<body>
-    <nav class="bg-[#454545] shadow-md rounded-b-lg p-4 relative w-full">
+<body class="bg-gray-100">
+    <nav class="bg-[#454545] shadow-md p-4 relative w-full">
         <div class="flex justify-between items-center">
             <a href="index.html" class="flex items-center">
                 <img src="assets/images/icon.jpg" alt="AD Interior Logo" class="h-[100px] w-auto -my-4">
@@ -41,10 +80,83 @@
             </div>
         </div>
     </nav>
-    <div id="main">
-        <img src="assets/images/example.jpeg" width=100%/>
-        <div>Professional Interior Design</div>
-        <img src="assets/images/example.jpeg" width=100%/>
+    <div class="slideshow-container">
+        <div id="slideshow">
+            <img src="assets/images/example1.jpeg" alt="Interior Design Example 1" class="slideshow-image active">
+            <img src="assets/images/example2.jpeg" alt="Interior Design Example 2" class="slideshow-image">
+            <img src="assets/images/example3.jpeg" alt="Interior Design Example 3" class="slideshow-image">
+        </div>
+        <div class="overlay flex items-center justify-center">
+            <div class="text-center px-4 relative z-10">
+                <h1 class="text-4xl md:text-6xl text-white font-light mb-4 tracking-wider">AD INTERIOR STUDIO</h1>
+                <p class="text-xl md:text-2xl text-[#bbae9d] font-light">Transforming Spaces, Creating Experiences</p>
+            </div>
+        </div>
     </div>
+    <div class="container mx-auto px-4 py-16">
+        <section class="mb-20">
+            <h2 class="text-3xl font-light text-center mb-12 text-[#454545]">Our Approach</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                    <div class="text-[#bbae9d] text-4xl mb-4 transform translate-x-0 group-hover:translate-x-4 transition-transform duration-300">
+                        <i class="fas fa-pencil-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-[#454545] transform translate-x-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Design Excellence</h3>
+                    <p class="text-gray-600 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 delay-100">Creating thoughtful, innovative spaces that reflect your unique style and needs.</p>
+                </div>
+            
+                <div class="group p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                    <div class="text-[#bbae9d] text-4xl mb-4 transform translate-x-0 group-hover:translate-x-4 transition-transform duration-300">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-[#454545] transform translate-x-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Client Focus</h3>
+                    <p class="text-gray-600 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 delay-100">Working closely with you to bring your vision to life while exceeding expectations.</p>
+                </div>
+            
+                <div class="group p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                    <div class="text-[#bbae9d] text-4xl mb-4 transform translate-x-0 group-hover:translate-x-4 transition-transform duration-300">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-[#454545] transform translate-x-0 group-hover:translate-x-2 transition-transform duration-300 delay-75">Quality Craftsmanship</h3>
+                    <p class="text-gray-600 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 delay-100">Delivering exceptional finishes with attention to every detail.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center py-16 bg-[#454545] rounded-lg shadow-lg">
+            <h2 class="text-3xl font-light mb-6 text-white">Ready to Transform Your Space?</h2>
+            <a href="contact.html" 
+               class="inline-block px-8 py-3 bg-[#bbae9d] text-black rounded hover:bg-opacity-90 transition-colors duration-300">
+                Contact Us Today
+            </a>
+        </section>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slideshow-image');
+        
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'prev');
+            });
+            
+            const prevIndex = (index - 1 + slides.length) % slides.length;
+            slides[prevIndex].classList.add('prev');
+            
+            slides[index].classList.add('active');
+        }
+
+        
+    
+        function nextSlide() {
+            console.log('Next slide:', currentSlide);
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        slides[0].classList.add('active');
+    
+        setInterval(nextSlide, 7000);
+    </script>
 </body>
 </html>
