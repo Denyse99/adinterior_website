@@ -10,6 +10,7 @@
     <link rel="icon" href="assets/images/icon.jpg">
     <link href="css/nav.css" rel="stylesheet">
     <script src="js/menu.js" defer></script>
+    <!-- custom CSS for the image slideshow -->
     <style>
         .slideshow-container {
             position: relative;
@@ -51,12 +52,12 @@
     </style>
 </head>
 <body class="bg-gray-100">
+    <!-- Top menu bar -->
     <nav class="bg-[#454545] shadow-md p-4 relative w-full">
         <div class="flex justify-between items-center">
             <a href="index.html" class="flex items-center">
                 <img src="assets/images/icon.jpg" alt="AD Interior Logo" class="h-[100px] w-auto -my-4">
             </a>
-            
             <div class="flex items-center">
                 <div id="menu" class="md:block">
                     <div class="menu-dropdown md:flex md:space-x-4 bg-[#454545]">
@@ -80,8 +81,10 @@
             </div>
         </div>
     </nav>
+    <!-- Slideshow Section -->
     <div class="slideshow-container">
         <div id="slideshow">
+            <!-- Add more images by just adding another <img> tab with the new image -->
             <img src="assets/images/example1.jpeg" alt="Interior Design Example 1" class="slideshow-image active">
             <img src="assets/images/example2.jpeg" alt="Interior Design Example 2" class="slideshow-image">
             <img src="assets/images/example3.jpeg" alt="Interior Design Example 3" class="slideshow-image">
@@ -93,6 +96,7 @@
             </div>
         </div>
     </div>
+    <!-- End of Slideshow Section -->
     <div class="container mx-auto px-4 py-16">
         <section class="mb-20">
             <h2 class="text-3xl font-light text-center mb-12 text-[#454545]">Our Approach</h2>
@@ -122,7 +126,7 @@
                 </div>
             </div>
         </section>
-
+        <!-- Contact Us Section -->
         <section class="text-center py-16 bg-[#454545] rounded-lg shadow-lg">
             <h2 class="text-3xl font-light mb-6 text-white">Ready to Transform Your Space?</h2>
             <a href="contact.html" 
@@ -131,7 +135,9 @@
             </a>
         </section>
     </div>
+    
     <script>
+        //Script for the slideshow
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slideshow-image');
         
