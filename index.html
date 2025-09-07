@@ -82,24 +82,13 @@
         </div>
     </nav>
     <!-- Slideshow Section -->
-    <div class="slideshow-container">
-        <div id="slideshow">
-            <!-- Add more images by just adding another <img> tab with the new image -->
-            <img src="assets/images/jalan3.jpg" alt="Interior Design Example 1" class="slideshow-image active">
-            <img src="assets/images/167hougang1.jpg" alt="Interior Design Example 2" class="slideshow-image">
-            <img src="assets/images/jalan1.jpg" alt="Interior Design Example 3" class="slideshow-image">
-            <img src="assets/images/jalan2.jpg" alt="Interior Design Example 4" class="slideshow-image">
-            <img src="assets/images/jalan4.jpg" alt="Interior Design Example 5" class="slideshow-image">
-            <img src="assets/images/jalan5.jpg" alt="Interior Design Example 6" class="slideshow-image">
-            <img src="assets/images/jalan6.jpg" alt="Interior Design Example 7" class="slideshow-image">
-            <img src="assets/images/jalan7.jpg" alt="Interior Design Example 8" class="slideshow-image">
-            <img src="assets/images/jalan8.jpg" alt="Interior Design Example 9" class="slideshow-image">
-            <img src="assets/images/normanton1.jpg" alt="Interior Design Example 10" class="slideshow-image">
-            <img src="assets/images/normanton2.jpg" alt="Interior Design Example 11" class="slideshow-image">
-            <img src="assets/images/normanton3.jpg" alt="Interior Design Example 12" class="slideshow-image">
-            <img src="assets/images/teckwhye1.jpg" alt="Interior Design Example 13" class="slideshow-image">
-            <img src="assets/images/compassvale1.jpg" alt="Interior Design Example 14" class="slideshow-image">
-            <img src="assets/images/compassvale2.jpg" alt="Interior Design Example 15" class="slideshow-image">
+    <div class="slideshow-container" data-note="Images auto-loaded by filename pattern slide-01.jpg, slide-02.jpg, ...">
+        <div id="slideshow"><!-- Images will be injected automatically -->
+            <!-- HOW TO ADD IMAGES (No code editing needed):
+                 1. Put your image files into assets/images/slideshow
+                 2. Rename them sequentially: slide-01.jpg, slide-02.jpg, slide-03.jpg ... (two digits, no gaps)
+                 3. Reload the page. That's it.
+                 If you reach 99 images, you can extend the script to three digits (ask a dev) -->
         </div>
         <div class="overlay flex items-center justify-center">
             <div class="text-center px-4 relative z-10">
@@ -151,31 +140,59 @@
     </div>
     
     <script>
-        //Script for the slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slideshow-image');
-        
-        function showSlide(index) {
-            slides.forEach(slide => {
-                slide.classList.remove('active', 'prev');
+        // Pure front-end slideshow loader using a predictable filename pattern.
+        // Users only add files named: slide-01.jpg, slide-02.jpg, slide-03.jpg ... in assets/images/slideshow
+        (async function initPatternSlideshow(){
+            const container = document.getElementById('slideshow');
+            const basePath = 'assets/images/slideshow/';
+            const maxImages = 100;          // hard cap to avoid endless 404s
+            const pad = n => String(n).padStart(2,'0');
+            const found = [];
+
+            // Sequentially probe for files until the first missing number (no gaps allowed)
+            for(let i=1;i<=maxImages;i++){
+                const file = `slide-${pad(i)}.jpg`;
+                const ok = await new Promise(res=>{
+                    const img = new Image();
+                    img.onload = ()=>res(true);
+                    img.onerror = ()=>res(false);
+                    img.src = basePath + file + '?v=' + Date.now(); // cache-bust
+                });
+                if(!ok){
+                    break; // stop at first missing number
+                }
+                found.push(file);
+            }
+
+            if(found.length === 0){
+                container.innerHTML = '<div style="color:white;text-align:center;padding:2rem">Add images named slide-01.jpg, slide-02.jpg, ... to assets/images/slideshow</div>';
+                return;
+            }
+
+            found.forEach((file,i)=>{
+                const img = document.createElement('img');
+                img.src = basePath + file;
+                img.alt = 'Slideshow image ' + (i+1);
+                img.className = 'slideshow-image' + (i===0 ? ' active' : '');
+                container.appendChild(img);
             });
-            
-            const prevIndex = (index - 1 + slides.length) % slides.length;
-            slides[prevIndex].classList.add('prev');
-            
-            slides[index].classList.add('active');
-        }
 
-        
-    
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        slides[0].classList.add('active');
-    
-        setInterval(nextSlide, 7000);
+            let current = 0;
+            const slides = () => container.querySelectorAll('.slideshow-image');
+            function show(idx){
+                const s = slides();
+                s.forEach(sl=>sl.classList.remove('active','prev'));
+                const prevIndex = (idx - 1 + s.length) % s.length;
+                s[prevIndex].classList.add('prev');
+                s[idx].classList.add('active');
+            }
+            function next(){
+                const s = slides();
+                current = (current + 1) % s.length;
+                show(current);
+            }
+            setInterval(next,7000);
+        })();
     </script>
 </body>
 </html>
