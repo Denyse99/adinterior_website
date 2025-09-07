@@ -140,58 +140,87 @@
     </div>
     
     <script>
-        // Pure front-end slideshow loader using a predictable filename pattern.
-        // Users only add files named: slide-01.jpg, slide-02.jpg, slide-03.jpg ... in assets/images/slideshow
-        (async function initPatternSlideshow(){
+        // Mobile-friendly progressive slideshow loader.
+        // Steps:
+        // 1. Load first existing image quickly and display immediately.
+        // 2. Continue loading subsequent images in the background.
+        // 3. Supports extensions: .jpg .jpeg .png .webp (lower/upper case) using numbered pattern slide-01, slide-02 ...
+        // 4. Stops at the first missing number (no gaps allowed).
+        // 5. Fallback message if nothing found after timeout.
+        (function initPatternSlideshow(){
             const container = document.getElementById('slideshow');
             const basePath = 'assets/images/slideshow/';
-            const maxImages = 100;          // hard cap to avoid endless 404s
+            const maxImages = 100;
             const pad = n => String(n).padStart(2,'0');
-            const found = [];
+            const exts = ['jpg','jpeg','png','webp','JPG','JPEG','PNG','WEBP'];
+            let current = 0; let rotationStarted = false; let cancelled = false;
 
-            // Sequentially probe for files until the first missing number (no gaps allowed)
-            for(let i=1;i<=maxImages;i++){
-                const file = `slide-${pad(i)}.jpg`;
-                const ok = await new Promise(res=>{
-                    const img = new Image();
-                    img.onload = ()=>res(true);
-                    img.onerror = ()=>res(false);
-                    img.src = basePath + file + '?v=' + Date.now(); // cache-bust
-                });
-                if(!ok){
-                    break; // stop at first missing number
-                }
-                found.push(file);
-            }
-
-            if(found.length === 0){
-                container.innerHTML = '<div style="color:white;text-align:center;padding:2rem">Add images named slide-01.jpg, slide-02.jpg, ... to assets/images/slideshow</div>';
-                return;
-            }
-
-            found.forEach((file,i)=>{
+            function createImg(src, idx){
                 const img = document.createElement('img');
-                img.src = basePath + file;
-                img.alt = 'Slideshow image ' + (i+1);
-                img.className = 'slideshow-image' + (i===0 ? ' active' : '');
-                container.appendChild(img);
-            });
+                img.decoding = 'async';
+                img.loading = 'lazy';
+                img.src = src + '?v=' + Date.now(); // light cache-bust to avoid stale empty cache entries
+                img.alt = 'Slideshow image ' + (idx+1);
+                img.className = 'slideshow-image' + (idx===0 ? ' active' : '');
+                return img;
+            }
 
-            let current = 0;
-            const slides = () => container.querySelectorAll('.slideshow-image');
-            function show(idx){
-                const s = slides();
-                s.forEach(sl=>sl.classList.remove('active','prev'));
-                const prevIndex = (idx - 1 + s.length) % s.length;
-                s[prevIndex].classList.add('prev');
-                s[idx].classList.add('active');
+            function startRotation(){
+                if(rotationStarted) return; rotationStarted = true;
+                setInterval(()=>{
+                    const slides = container.querySelectorAll('.slideshow-image');
+                    if(slides.length < 2) return; // nothing to rotate yet
+                    slides.forEach(sl=>sl.classList.remove('active','prev'));
+                    const prevIndex = current;
+                    current = (current + 1) % slides.length;
+                    slides[prevIndex].classList.add('prev');
+                    slides[current].classList.add('active');
+                },7000);
             }
-            function next(){
-                const s = slides();
-                current = (current + 1) % s.length;
-                show(current);
+
+            function probeFile(index){
+                return new Promise(resolve=>{
+                    const baseName = `slide-${pad(index)}`;
+                    let i = 0;
+                    function tryNext(){
+                        if(i>=exts.length){ resolve(null); return; }
+                        const file = baseName + '.' + exts[i++];
+                        const test = new Image();
+                        test.onload = ()=>resolve(file);
+                        test.onerror = tryNext;
+                        test.src = basePath + file + '?chk=' + Date.now();
+                    }
+                    tryNext();
+                });
             }
-            setInterval(next,7000);
+
+            async function loadSequential(){
+                const loaded = [];
+                for(let idx=1; idx<=maxImages && !cancelled; idx++){
+                    const file = await probeFile(idx);
+                    if(!file){ break; }
+                    loaded.push(file);
+                    // Append immediately when each loads (progressive)
+                    const imgEl = createImg(basePath + file, loaded.length-1);
+                    container.appendChild(imgEl);
+                    if(loaded.length === 1){
+                        // First image visible; start rotation after a short delay so CSS paints
+                        setTimeout(startRotation, 350);
+                    }
+                }
+                if(loaded.length === 0){
+                    container.innerHTML = '<div style="color:white;text-align:center;padding:2rem">No slideshow images found.<br>Place files like slide-01.jpg in assets/images/slideshow</div>';
+                }
+            }
+
+            // Safety fallback if nothing shows in 4s
+            setTimeout(()=>{
+                if(!rotationStarted && container.children.length === 0){
+                    container.style.background = '#111 url(\'assets/images/icon.jpg\') center/contain no-repeat';
+                }
+            },4000);
+
+            loadSequential();
         })();
     </script>
 </body>
