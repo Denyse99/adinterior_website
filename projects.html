@@ -10,6 +10,7 @@
     <link rel="icon" href="assets/images/icon.jpg">
     <link href="css/nav.css" rel="stylesheet">
     <script src="js/menu.js" defer></script>
+    <script src="js/projects-metadata.js" defer></script>
     <script src="js/projects.js" defer></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -49,27 +50,17 @@
         </div>
 
         <!-- Project Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Project Card Template -->
-            <div class="project-card group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
-                data-title="Jalan Jurong Kechil"
-                data-description="Modern minimalist renovation with a focus on clean lines and natural light. This project transformed a traditional space into a contemporary haven."
-                data-images='["assets/images/jalan1.jpg", "assets/images/jalan2.jpg", "assets/images/jalan3.jpg"]'
-                data-details="<strong>Scope:</strong> Full renovation<br><strong>Duration:</strong> 12 weeks<br><strong>Style:</strong> Modern Minimalist">
-                <div class="relative overflow-hidden aspect-[4/3]">
-                    <img src="assets/images/jalan1.jpg" alt="Jalan Jurong Kechil" 
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
-                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Project</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold text-[#454545] mb-2">Jalan Jurong Kechil</h3>
-                    <p class="text-gray-600 text-sm">Modern minimalist renovation with a focus on clean lines and natural light.</p>
-                </div>
-            </div>
-            <!-- Copy and modify the Project Card Template for each project -->
-        </div>
+    <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Project Cards will be injected here by projects.js -->
+          <!-- HOW TO ADD A PROJECT (No code editing needed):
+              1. Create a folder: assets/projects/project-01 (two digits)
+              2. Add cover.jpg (grid thumbnail)
+              3. Add gallery images: img-01.jpg, img-02.jpg ... (no gaps)
+              4. (Optional) Add details in js/projects-metadata.js (PROJECT_METADATA)
+              5. Next folder: project-02, project-03, etc.
+              6. Open projects.html (works offline via file://)
+          -->
+    </div>
 
         <!-- Project Window Template -->
         <div id="projectWindow" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden">
